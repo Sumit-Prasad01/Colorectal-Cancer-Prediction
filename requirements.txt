@@ -1,3 +1,11 @@
 pandas 
 numpy
 kagglehub
+setuptools
+scikit-learn
+Flask 
+joblib
+matplotlib 
+seaborn 
+mlflow
+kfp
