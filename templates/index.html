@@ -1,10 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Colorectal Cancer Prediction System</title>
-</head>
-<body>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Colorectal Cancer Prediction</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@tailwindcss/forms"></script>
+    <script src="https://unpkg.com/framer-motion/dist/framer-motion.umd.js"></script>
+    <style>
+      @keyframes fadeInUp {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .fade-in-up {
+        animation: fadeInUp 0.8s ease forwards;
+      }
+
+      .gradient-bg {
+        background: linear-gradient(
+          135deg,
+          #1e3a8a,
+          #2563eb,
+          #0ea5e9,
+          #14b8a6
+        );
+        background-size: 300% 300%;
+        animation: gradientShift 10s ease infinite;
+      }
+
+      @keyframes gradientShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+    </style>
+  </head>
+
+  <body
+    class="min-h-screen flex items-center justify-center gradient-bg text-white font-sans p-4"
+  >
+    <div
+      class="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-2xl w-full max-w-md fade-in-up"
+    >
+      <h2 class="text-3xl font-bold text-center mb-6 text-white">
+        🧬 Colorectal Cancer Prediction
+      </h2>
+
+      <form action="/predict" method="post" class="space-y-5">
+        <div>
+          <label
+            for="healthcare_costs"
+            class="block text-sm font-semibold mb-2"
+            >Healthcare Costs</label
+          >
+          <input
+            type="number"
+            step="0.01"
+            id="healthcare_costs"
+            name="healthcare_costs"
+            required
+            class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 transition"
+            placeholder="Enter healthcare cost"
+          />
+        </div>
+
+        <div>
+          <label for="tumor_size" class="block text-sm font-semibold mb-2"
+            >Tumor Size (mm)</label
+          >
+          <input
+            type="number"
+            step="0.01"
+            id="tumor_size"
+            name="tumor_size"
+            required
+            class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 transition"
+            placeholder="Enter tumor size"
+          />
+        </div>
+
+        <div>
+          <label for="mortality_rate" class="block text-sm font-semibold mb-2"
+            >Mortality Rate per 100K</label
+          >
+          <input
+            type="number"
+            step="0.01"
+            id="mortality_rate"
+            name="mortality_rate"
+            required
+            class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 transition"
+            placeholder="Enter mortality rate"
+          />
+        </div>
+
+        <div>
+          <label for="treatment_type" class="block text-sm font-semibold mb-2"
+            >Treatment Type</label
+          >
+          <input
+            type="number"
+            id="treatment_type"
+            name="treatment_type"
+            required
+            class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 transition"
+            placeholder="Enter treatment type"
+          />
+        </div>
+
+        <div>
+          <label for="diabetes" class="block text-sm font-semibold mb-2"
+            >Diabetes (0/1)</label
+          >
+          <input
+            type="number"
+            id="diabetes"
+            name="diabetes"
+            required
+            class="w-full px-4 py-2 rounded-lg bg-white/20 border border-white/30 placeholder-gray-300 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 transition"
+            placeholder="Enter 0 or 1"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="w-full py-3 mt-4 bg-cyan-500 hover:bg-cyan-400 text-white font-semibold rounded-lg shadow-md transform hover:scale-105 transition duration-300"
+        >
+          Predict
+        </button>
+      </form>
+
+      {% if prediction is not none %}
+      <div
+        class="mt-6 bg-white/20 text-center p-4 rounded-xl shadow-lg fade-in-up animate-bounce"
+      >
+        <h3 class="text-lg font-semibold">🩺 Prediction Result:</h3>
+        <p class="text-2xl font-bold text-cyan-300 mt-2">
+          {{ prediction }}
+        </p>
+      </div>
+      {% endif %}
+    </div>
+  </body>
 </html>
