@@ -138,4 +138,3 @@ cython_debug/
 # VS Code settings
 .vscode/
 
-artifacts/
