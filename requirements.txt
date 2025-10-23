@@ -9,3 +9,4 @@ matplotlib
 seaborn 
 mlflow
 kfp
+lightgbm
