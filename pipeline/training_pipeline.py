@@ -1,3 +1,5 @@
+import mlflow
+
 from config.paths_config import *
 from config.data_ingestion_config import *
 from src.logger import get_logger
@@ -16,9 +18,10 @@ if __name__ == "__main__":
 
         processor = DataProcessing(INPUT_FILE_PATH, OUTPUT_FILE_PATH)
         processor.run()
-
-        trainer = ModelTraining(PROCESSED_DATA_PATH)
-        trainer.run()
+        
+        with mlflow.start_run():
+            trainer = ModelTraining(PROCESSED_DATA_PATH)
+            trainer.run()
 
     except Exception as e:
         logger.error(f"Pipeline terminated due to error: {e}")

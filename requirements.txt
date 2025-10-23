@@ -7,6 +7,6 @@ Flask
 joblib
 matplotlib 
 seaborn 
-mlflow
+mlflow == 3.3.0
 kfp
 lightgbm

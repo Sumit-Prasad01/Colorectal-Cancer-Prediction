@@ -9,6 +9,10 @@ from src.custom_exception import CustomException
 from config.paths_config import *
 from config.model_params import *
 
+import mlflow
+import mlflow.sklearn
+
+
 logger = get_logger(__name__)
 
 class ModelTraining:
@@ -92,12 +96,19 @@ class ModelTraining:
             recall = recall_score(self.y_test, y_pred, average = "weighted")
             f1 = f1_score(self.y_test, y_pred, average = "weighted")
 
+            mlflow.log_metric("Accuracy", accuracy)
+            mlflow.log_metric("Precision", precision)
+            mlflow.log_metric("Recall", recall)
+            mlflow.log_metric("F1 Score", f1)
+
             logger.info(f"Accuracy : {accuracy} ")
             logger.info(f"Precision : {precision} ")
             logger.info(f"Recall : {recall} ")
             logger.info(f"F1 : {f1} ")
 
             roc_auc = roc_auc_score(self.y_test, y_proba)
+
+            mlflow.log_metric("Roc Auc Score", roc_auc)
 
             logger.info(f"Roc-Aur_Score : {roc_auc}")
         
@@ -116,5 +127,6 @@ class ModelTraining:
 
 
 if __name__ ==  "__main__":
-    trainer = ModelTraining(PROCESSED_DATA_PATH)
-    trainer.run()
+    with mlflow.start_run():
+        trainer = ModelTraining(PROCESSED_DATA_PATH)
+        trainer.run()
