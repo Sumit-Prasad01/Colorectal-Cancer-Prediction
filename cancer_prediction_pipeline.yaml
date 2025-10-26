@@ -1,0 +1,51 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: cancer-prediction-pipeline-
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.22, pipelines.kubeflow.org/pipeline_compilation_time: '2025-10-26T17:49:17.204088',
+    pipelines.kubeflow.org/pipeline_spec: '{"description": "Pipeline for cancer prediction.",
+      "name": "Cancer Prediction Pipeline"}'}
+  labels: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.22}
+spec:
+  entrypoint: cancer-prediction-pipeline
+  templates:
+  - name: cancer-prediction-pipeline
+    dag:
+      tasks:
+      - {name: data-ingestion, template: data-ingestion}
+      - name: data-processing
+        template: data-processing
+        dependencies: [data-ingestion]
+      - name: model-training
+        template: model-training
+        dependencies: [data-processing]
+  - name: data-ingestion
+    container:
+      command: [python, src/data_ingestion.py]
+      image: sumit017/cancer-app:latest
+    metadata:
+      labels:
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.22
+        pipelines.kubeflow.org/pipeline-sdk-type: kfp
+        pipelines.kubeflow.org/enable_caching: "true"
+  - name: data-processing
+    container:
+      command: [python, src/data_processing.py]
+      image: sumit017/cancer-app:latest
+    metadata:
+      labels:
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.22
+        pipelines.kubeflow.org/pipeline-sdk-type: kfp
+        pipelines.kubeflow.org/enable_caching: "true"
+  - name: model-training
+    container:
+      command: [python, src/model_training.py]
+      image: sumit017/cancer-app:latest
+    metadata:
+      labels:
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.22
+        pipelines.kubeflow.org/pipeline-sdk-type: kfp
+        pipelines.kubeflow.org/enable_caching: "true"
+  arguments:
+    parameters: []
+  serviceAccountName: pipeline-runner
